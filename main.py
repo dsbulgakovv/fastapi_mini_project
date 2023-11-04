@@ -46,7 +46,7 @@ def root():
 
 @app.get('/dog')
 def get_dog_by_breed(breed: DogType) -> list[Dog]:
-    """ Get dog by breed. """
+    """ Get dogs by breed. """
     dogs_searched = list()
     for pk, dog in dogs_db.items():
         if dog.kind == breed:
