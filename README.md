@@ -1,2 +1,9 @@
 # fastapi_mini_project
-DevOps course HSE FastApi mini project
+#### DevOps course HSE FastApi mini project
+
+В задании необходимо реализовать микросервис с помощью фреймворка FastAPI, который будет соответствовать техническим требованиям в формате OpenAPI, описанным в файле openapi_dsc.yaml.  
+
+Основные задачи:
+- записывать собак в базу
+- забирать собак из базы по id
+- изменять информацию о собаке
