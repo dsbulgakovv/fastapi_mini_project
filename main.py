@@ -99,6 +99,6 @@ def edit_dog(primary_key: int, dog: Dog) -> Dog:
         dogs_db[primary_key] = dog
     else:
         raise HTTPException(status_code=409,
-                            detail='The specified PK already exists.')
+                            detail='The specified PK doesn\'t exist.')
 
     return dog
