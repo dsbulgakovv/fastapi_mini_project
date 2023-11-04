@@ -1,4 +1,5 @@
 from enum import Enum
+from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ValidationError
 
@@ -44,16 +45,12 @@ def root():
 
 
 @app.get('/dog')
-def get_dog_by_breed(breed: DogType) -> list:
-    """ Get dog by bread. """
+def get_dog_by_breed(breed: DogType) -> list[Dog]:
+    """ Get dog by breed. """
     dogs_searched = list()
     for pk, dog in dogs_db.items():
         if dog.kind == breed:
-            dog_dsc = dict()
-            dog_dsc['name'] = dog.name
-            dog_dsc['pk'] = dog.pk
-            dog_dsc['kind'] = dog.kind
-            dogs_searched.append(dog_dsc)
+            dogs_searched.append(dog)
         else:
             continue
 
@@ -61,15 +58,47 @@ def get_dog_by_breed(breed: DogType) -> list:
 
 
 @app.get('/dog/{primary_key}')
-def get_dog_by_pk(primary_key: int) -> dict:
+def get_dog_by_pk(primary_key: int) -> Dog:
     """ Get dog by primary key. """
     try:
         dog = dogs_db[primary_key]
-        dog_searched = dict()
-        dog_searched['name'] = dog.name
-        dog_searched['pk'] = dog.pk
-        dog_searched['kind'] = dog.kind
     except KeyError:
-        raise HTTPException(status_code=422, detail=f'There is no dog with index {primary_key} :(')
+        raise HTTPException(status_code=422, detail=f'The specified PK doesn\'t exist.')
 
-    return dog_searched
+    return dog
+
+
+@app.post('/post')
+def post() -> Timestamp:
+    """ Post empty body. """
+    next_id = post_db[-1].id + 1
+    now = Timestamp(id=next_id, timestamp=datetime.now().hour)
+    post_db.append(now)
+
+    return now
+
+
+@app.post('/dog', response_model=Dog, summary='Create Dog')
+def create_dog(dog: Dog) -> Dog:
+    """ Post a new dog to the database """
+    existing_pks = dogs_db.keys()
+    if dog.pk in existing_pks:
+        raise HTTPException(status_code=409,
+                            detail='The specified PK already exists.')
+    else:
+        dogs_db[dog.pk] = dog
+
+    return dog
+
+
+@app.patch('/dog/{primary_key}')
+def edit_dog(primary_key: int, dog: Dog) -> Dog:
+    """ Edit an existing dog """
+    existing_pks = dogs_db.keys()
+    if primary_key in existing_pks:
+        dogs_db[primary_key] = dog
+    else:
+        raise HTTPException(status_code=409,
+                            detail='The specified PK already exists.')
+
+    return dog
