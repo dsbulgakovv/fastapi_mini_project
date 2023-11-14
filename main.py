@@ -2,6 +2,8 @@ from enum import Enum
 from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ValidationError
+from typing import Optional
+
 
 app = FastAPI()
 
@@ -45,14 +47,17 @@ def root():
 
 
 @app.get('/dog')
-def get_dog_by_breed(breed: DogType) -> list:
+def get_dog_by_breed(breed: Optional[DogType] = None) -> list:
     """ Get dogs by breed. """
-    dogs_searched = list()
-    for pk, dog in dogs_db.items():
-        if dog.kind == breed:
-            dogs_searched.append(dog)
-        else:
-            continue
+    if breed:
+        dogs_searched = list()
+        for pk, dog in dogs_db.items():
+            if dog.kind == breed:
+                dogs_searched.append(dog)
+            else:
+                continue
+    else:
+        dogs_searched = dogs_db.values()
 
     return dogs_searched
 
