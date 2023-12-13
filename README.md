@@ -10,4 +10,4 @@
 - изменять информацию о собаке
 
 
-Command to run docker container: docker run -p 5555:5555 dsbulgakovv/fastapi_study_project:v0.1.0
+Command to run docker container: docker run -p 5555:5555 dsbulgakovv/fastapi_study_project
