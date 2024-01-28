@@ -77,7 +77,7 @@ def get_dog_by_pk(primary_key: int) -> Dog:
 def post() -> Timestamp:
     """ Post empty body. """
     next_id = post_db[-1].id + 1
-    now = Timestamp(id=next_id, timestamp=datetime.now().hour)
+    now = Timestamp(id=next_id, timestamp=datetime.now().hour, input_type=datetime)
     post_db.append(now)
 
     return now
