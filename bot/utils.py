@@ -2,7 +2,7 @@ from aiohttp import ClientSession
 
 
 class PetClinicAPI:
-    def __init__(self, url="http://localhost:8888"):
+    def __init__(self, url="http://api-service:5555"):
         self.base_url = url
 
     async def get_root(self):

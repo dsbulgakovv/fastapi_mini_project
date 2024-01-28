@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  api-service:
+    build:
+      dockerfile: ./api_service/Dockerfile
+    ports:
+      - "5555:5555"
+    expose:
+      - "5555"
+
+  bot:
+    build:
+      context: .
+      dockerfile: ./bot/Dockerfile
+    depends_on:
+      - api-service
+    ports:
+      - "3000:3000"
