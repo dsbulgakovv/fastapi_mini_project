@@ -9,8 +9,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from handlers import router
 
 
-# TOKEN = os.environ['BOT_TOKEN']
-TOKEN = "6539335799:AAEQHzH3Czps34eWFVfAKMnvNkowuQpClMc"
+TOKEN = os.environ['BOT_TOKEN']
 
 
 async def main():
